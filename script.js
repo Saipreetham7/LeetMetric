@@ -86,6 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalEasyQuestions = parsedData.data.allQuestionsCount[1].count;
     const totalMediumQuestions = parsedData.data.allQuestionsCount[2].count;
     const totalHardQuestions = parsedData.data.allQuestionsCount[3].count;
+
   }
 
   searchBtn.addEventListener('click', () => {
