@@ -5,9 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const easyProgressCircle = document.querySelector('.easy-progress');
   const mediumProgressCircle = document.querySelector('.medium-progress');
   const hardProgressCircle = document.querySelector('.hard-progress');
-  const easyLabel = document.querySelector('.easy-label');
-  const mediumLabel = document.querySelector('.medium-label');
-  const hardLabel = document.querySelector('.hard-label');
+  const easyLabel = document.querySelector('#easy-label');
+  const mediumLabel = document.querySelector('#medium-label');
+  const hardLabel = document.querySelector('#hard-label');
   const cardStatsContainer = document.querySelector('.stats-card');
 
   function validateUsername(username) {
@@ -75,10 +75,18 @@ document.addEventListener('DOMContentLoaded', () => {
       displayUserData(parsedData);
     } catch (error) {
       statsContainer.innerHTML = `<p> No data Found</p>`;
+      console.log(error);
     } finally {
       searchBtn.textContent = 'Search';
       searchBtn.disabled = false;
     }
+  }
+
+  function updateProgress(solved, total, label, circle) {
+    const progressDegree = (solved / total) * 100;
+    console.log();
+    circle.style.setProperty('--progress-degree', `${progressDegree}%`);
+    label.textContent = `${solved}/${total}`;
   }
 
   function displayUserData(parsedData) {
@@ -87,6 +95,73 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalMediumQuestions = parsedData.data.allQuestionsCount[2].count;
     const totalHardQuestions = parsedData.data.allQuestionsCount[3].count;
 
+    const totalSolvedQuestions =
+      parsedData.data.matchedUser.submitStats.acSubmissionNum[0].count;
+    const totalSolvedEasyQuestions =
+      parsedData.data.matchedUser.submitStats.acSubmissionNum[1].count;
+    const totalSolvedMediumQuestions =
+      parsedData.data.matchedUser.submitStats.acSubmissionNum[2].count;
+    const totalSolvedHardQuestions =
+      parsedData.data.matchedUser.submitStats.acSubmissionNum[3].count;
+
+    updateProgress(
+      totalSolvedEasyQuestions,
+      totalEasyQuestions,
+      easyLabel,
+      easyProgressCircle
+    );
+    updateProgress(
+      totalSolvedMediumQuestions,
+      totalMediumQuestions,
+      mediumLabel,
+      mediumProgressCircle
+    );
+    updateProgress(
+      totalSolvedHardQuestions,
+      totalHardQuestions,
+      hardLabel,
+      hardProgressCircle
+    );
+
+    const cardsData = [
+      {
+        label: 'Overall Submissions',
+        value:
+          parsedData.data.matchedUser.submitStats.totalSubmissionNum[0]
+            .submissions,
+      },
+      {
+        label: 'Overall Easy Submissions',
+        value:
+          parsedData.data.matchedUser.submitStats.totalSubmissionNum[1]
+            .submissions,
+      },
+      {
+        label: 'Overall Medium Submissions',
+        value:
+          parsedData.data.matchedUser.submitStats.totalSubmissionNum[2]
+            .submissions,
+      },
+      {
+        label: 'Overall Hard Submissions',
+        value:
+          parsedData.data.matchedUser.submitStats.totalSubmissionNum[3]
+            .submissions,
+      },
+    ];
+
+    console.log(cardsData);
+
+    cardStatsContainer.innerHTML = cardsData
+      .map((data) => {
+        return `
+        <div class="card">
+          <h3>${data.label}</h3>
+          <p>${data.value}</p>
+        </div>
+      `;
+      })
+      .join('');
   }
 
   searchBtn.addEventListener('click', () => {

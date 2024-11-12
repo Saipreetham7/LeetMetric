@@ -60,7 +60,8 @@ body {
   font-size: 16px;
   color: white;
   font-weight: 700;
-  background: conic-gradient(#299f5d var(--progress-dergree, 0%), #283a2e 0%);
+  background: conic-gradient(#299f5d var(--progress-degree, 0%), #283a2e 0%);
+  flex-direction: column;
 }
 
 .circle span {
@@ -74,4 +75,23 @@ body {
   justify-content: space-evenly;
   flex-wrap: wrap;
   gap: 10px;
+}
+
+.stats-card {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: space-evenly;
+}
+
+.card {
+  background-color: beige;
+  width: 40%;
+  max-width: 290px;
+  padding: 20px;
+  border-radius: 20px;
+  font-size: 1rem;
+  min-height: 2rem;
 }
